@@ -1,6 +1,6 @@
 # Safe Text Api
 
-
+Safe Text API is an automated toxicity-detection system that identifies and filters toxic, abusive, or harmful text using advanced NLP and ML techniques. Built with Detoxify, FastAPI, PostgreSQL, and a Flask-based admin dashboard, it supports real-time scoring and batch processing. The system is fully containerized with Docker for seamless deployment.
 
 
 ## 🚀 Getting Started
