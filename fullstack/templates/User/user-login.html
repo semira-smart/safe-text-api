@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeText Login - Secure Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user-login.css') }}" />
+</head>
+
+<body class="min-h-screen bg-slate-900 text-white">
+    <!-- Background Glows -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] right-[-15%] w-[500px] h-[500px] bg-sky-500/20 rounded-full filter blur-3xl opacity-40 animate-pulse"></div>
+        <div class="absolute bottom-[-15%] left-[-10%] w-[400px] h-[400px] bg-blue-600/20 rounded-full filter blur-3xl opacity-50 animate-pulse-slow"></div>
+    </div>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-shield-alt text-sky-400 text-2xl"></i>
+            <span class="text-2xl font-orbitron font-bold text-white">SafeText</span>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-nav-menu" id="mobileNavMenu">
+        <div class="mobile-nav-content">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-shield-alt text-sky-400 text-2xl"></i>
+                    <span class="text-2xl font-orbitron font-bold text-white">SafeText</span>
+                </div>
+                <button class="mobile-close-btn" id="mobileCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="flex flex-col space-y-6">
+                <a href="{{ url_for('home') }}" class="mobile-nav-link">
+                    <i class="fas fa-home mr-3"></i>
+                    Home
+                </a>
+                <a href="{{ url_for('user_signup') }}" class="mobile-nav-link">
+                    <i class="fas fa-user-plus mr-3"></i>
+                    Sign Up
+                </a>
+                <a href="{{ url_for('user_login') }}" class="mobile-nav-link active">
+                    <i class="fas fa-sign-in-alt mr-3"></i>
+                    Login
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Desktop Header -->
+    <header class="desktop-header">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-shield-alt text-sky-400 text-2xl"></i>
+            <span class="text-2xl font-orbitron font-bold text-white">SafeText</span>
+        </div>
+        <nav class="flex items-center gap-8">
+            <a href="{{ url_for('home') }}" class="hover-underline">Home</a>
+            <a href="{{ url_for('user_signup') }}" class="hover-underline">Sign Up</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="login-main">
+        <div class="login-container">
+            <!-- Login Card -->
+            <div class="glass-card rounded-2xl shadow-2xl p-6 lg:p-8">
+                <!-- Header Section -->
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-gradient-to-r from-sky-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-lock text-white text-2xl"></i>
+                    </div>
+                    <h1 class="text-3xl lg:text-4xl font-orbitron font-bold text-white mb-3">
+                        Welcome Back
+                    </h1>
+                    <p class="text-slate-400 text-sm lg:text-base">
+                        Sign in to access your dashboard and API keys.
+                    </p>
+                </div>
+
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %} 
+                {% if messages %}
+                <div class="mb-6">
+                    {% for category, message in messages %}
+                    <div class="flash-message {% if category == 'error' %} flash-error {% elif category == 'success' %} flash-success {% else %} flash-info {% endif %}">
+                        <i class="fas {% if category == 'error' %} fa-exclamation-circle {% elif category == 'success' %} fa-check-circle {% else %} fa-info-circle {% endif %} mr-2"></i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %} 
+                {% endwith %}
+
+                <!-- Login Form -->
+                <form method="POST" action="{{ url_for('user_login') }}" class="space-y-6">
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope form-icon"></i>
+                            <input type="email" id="email" name="email" class="input-field" placeholder="Enter your email" required />
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="form-label">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock form-icon"></i>
+                            <input type="password" id="password" name="password" class="input-field pr-12" placeholder="Enter your password" required />
+                            <button type="button" class="password-toggle" id="passwordToggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="form-checkbox" />
+                            <span class="ml-2 text-sm text-slate-400">Remember me</span>
+                        </label>
+                        <a href="#" class="text-sm text-sky-400 hover:text-sky-300 transition-colors">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+                
+
+                <!-- Signup Link -->
+                <div class="text-center">
+                    <p class="text-slate-400 text-sm">
+                        Don't have an account?
+                        <a href="{{ url_for('user_signup') }}" class="signup-link">
+                            Sign up now
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='Js/user-login.js') }}"></script>
+
+</body>
+</html>

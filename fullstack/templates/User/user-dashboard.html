@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeText - User Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user-dashboard.css') }}" />
+</head>
+
+<body class="text-slate-300">
+    <!-- Background Glows -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-[-20%] left-[-10%] w-[400px] h-[400px] bg-blue-500/20 rounded-full filter blur-3xl opacity-40"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-sky-400/20 rounded-full filter blur-3xl opacity-40"></div>
+    </div>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
+                🛡️
+            </div>
+            <span class="text-xl font-orbitron font-bold text-white">SafeText</span>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="relative min-h-screen lg:flex">
+        <!-- Sidebar -->
+        <aside class="sidebar lg:block w-64 flex-shrink-0 bg-slate-900/50 lg:bg-transparent">
+            <div class="py-6 px-4">
+                <div class="flex items-center gap-3 px-2 mb-8">
+                    <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
+                        🛡️
+                    </div>
+                    <span class="text-xl font-orbitron font-bold text-white">SafeText</span>
+                </div>
+                <nav class="flex flex-col space-y-2">
+                    <a href="#dashboard" class="sidebar-link active text-lg px-4 py-3 rounded-r-lg" data-section="dashboard">
+                        <i class="fas fa-home fa-fw mr-3"></i>Dashboard
+                    </a>
+                    <a href="#api-keys" class="sidebar-link text-lg px-4 py-3 rounded-r-lg" data-section="api-keys">
+                        <i class="fas fa-key fa-fw mr-3"></i>API Keys
+                    </a>
+                    <a href="http://127.0.0.1:8000/docs" class="sidebar-link text-lg px-4 py-3 rounded-r-lg" id="document-open" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-book fa-fw mr-3"></i>Docs
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 lg:p-10">
+            <!-- Desktop Header -->
+            <div class="desktop-header">
+                <h1 id="page-title" class="text-3xl font-orbitron text-white">
+                    Dashboard
+                </h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-slate-400">Welcome, {{ user }}</span>
+                    <a href="{{ url_for('logout') }}" class="px-4 py-2 bg-sky-500/20 text-sky-300 rounded-lg border border-sky-500/30 hover:bg-sky-500/40 transition">Logout</a>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="container mx-auto p-2 lg:p-4">
+                    <!-- Cards row -->
+                    <div class="card-grid mb-6">
+                        <!-- Credits Remaining -->
+                        <div class="glass-pane p-4 lg:p-5">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-coins text-green-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-400">
+                                        Credits Remaining
+                                    </p>
+                                    <p id="credits-remaining" class="text-2xl lg:text-3xl font-bold text-white mt-1">
+                                        {{ credit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Analyzed -->
+                        <div class="glass-pane p-4 lg:p-5">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-chart-bar text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-400">Total Analyzed</p>
+                                    <p id="total-analyzed" class="text-2xl lg:text-3xl font-bold text-white mt-1">
+                                        {{ totalanalysis }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chart -->
+                    <div class="glass-pane p-4 lg:p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">
+                            API Usage This Week
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="usageChart" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Keys Section -->
+            <section id="api-keys" class="section">
+                <div class="glass-pane p-4 lg:p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">
+                        Manage Your API Keys
+                    </h3>
+                    <button id="generate-key-btn" class="w-full lg:w-auto px-5 py-3 bg-sky-500/80 text-white rounded-lg hover:bg-sky-500 transition mb-6 flex items-center justify-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        <span id="generate-key-btn-text">Generate New Key</span>
+                    </button>
+
+                    <div id="api-keys-list" class="space-y-4">
+                        {% if keys %} {% for key in keys %}
+                        <div class="api-key-card bg-slate-800/50 p-4 rounded-lg border border-slate-700" data-key="{{ key }}">
+                            <p class="text-sm text-slate-400">
+                                Created on {{ key.created_at }}
+                            </p>
+                            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center mt-2 space-y-3 lg:space-y-0">
+                                <p class="api-key-value font-mono text-sky-400 break-all">{{ key }}</p>
+                                <div class="flex space-x-2">
+                                    <button class="copy-key-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-copy mr-1 lg:mr-2"></i>
+                                        <span class="hidden lg:inline">Copy</span>
+                                    </button>
+                                    <button class="delete-key-btn bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center justify-center">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %} {% else %}
+                        <p id="no-keys-message" class="text-slate-400 text-center py-8">
+                            You don't have any API keys yet. Generate one to get started!
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="#dashboard" class="mobile-nav-item active" data-section="dashboard">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#api-keys" class="mobile-nav-item" data-section="api-keys">
+            <i class="fas fa-key"></i>
+            <span>API Keys</span>
+        </a>
+        <a href="http://127.0.0.1:8000/docs" class="mobile-nav-item" id="mobile-docs" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-book"></i>
+            <span>Docs</span>
+        </a>
+        <a href="{{url_for('logout')}}" class="mobile-nav-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+    <script>
+  window.chartDataFromBackend = {{ chart_data | tojson }};
+</script>
+<script src="{{ url_for('static', filename='Js/user-dashboard.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+venv
+.env
+.pytest_cache
+.env.local
+# Python bytecode files
+*.pyc
+__pycache__/
+# Other common Python ignore patterns (optional, but good practice)
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.vscode/ # VS Code specific files, if you don't want to share settings
+.env     # Environment variables file, usually contains sensitive info

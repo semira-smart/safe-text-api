@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeText Registration - Join Our Community</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .input-field {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.8);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            outline: none;
+        }
+        .submit-btn {
+            background: linear-gradient(90deg, #38bdf8, #3b82f6);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+        .hover-underline {
+            position: relative;
+            text-decoration: none;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #38bdf8;
+            transition: all 0.3s ease-out;
+            transform: translateX(-50%);
+        }
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-900 text-white">
+
+    <!-- Background Glows -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div class="absolute top-[-20%] left-[-10%] w-[400px] h-[400px] bg-blue-500/20 rounded-full filter blur-3xl opacity-40 animate-pulse"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-sky-400/20 rounded-full filter blur-3xl opacity-40 animate-pulse-slow"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="w-full px-8 py-5 flex items-center justify-between absolute top-0 left-0 z-10">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-shield-alt text-sky-400 text-2xl"></i>
+            <span class="text-2xl font-orbitron font-bold text-white">SafeText</span>
+        </div>
+        <nav class="flex items-center gap-8">
+       <a href="{{ url_for('user_login') }}" class="hover-underline">Login</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center justify-center px-4 py-8 relative z-1">
+        <div class="w-full max-w-lg">
+            
+            <!-- Registration Card -->
+            <div class="glass-card rounded-2xl shadow-2xl p-8">
+                
+                <!-- Header Section -->
+                <div class="text-center mb-8">
+                    <h1 class="text-4xl font-orbitron font-bold text-white mb-3">Create Your Account</h1>
+                    <p class="text-slate-400">
+                        Unlock the power of our toxic speech detection API.
+                    </p>
+                </div>
+
+                <!-- Registration Form -->
+                <form method="POST" action="{{ url_for('user_signup') }}" class="space-y-6">
+                    
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="email" id="email" name="email" class="input-field w-full pl-12 pr-4 py-3 rounded-lg" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="password" id="password" name="password" class="input-field w-full pl-12 pr-12 py-3 rounded-lg" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password Field -->
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <i class="fas fa-check-circle absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="input-field w-full pl-12 pr-12 py-3 rounded-lg" placeholder="••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div>
+                        <button type="submit" class="submit-btn w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Login Link -->
+                <div class="text-center mt-6">
+                    <p class="text-slate-400 text-sm">
+                        Already have an account? 
+                        <a href="{{ url_for('user_login') }}" class="text-sky-400 hover:text-sky-300 font-medium transition-colors duration-300 hover-underline ml-1">
+                            Sign In
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

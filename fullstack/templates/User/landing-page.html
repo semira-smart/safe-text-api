@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safe-Text-API - Intelligent Toxic Comment Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="static/css/landing-page.css" />
+</head>
+
+<body class="bg-slate-900 text-white font-inter overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-lg border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-shield-alt text-sky-400 text-2xl"></i>
+                    <span class="text-xl font-bold">Safe-Text-API</span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav hidden md:flex items-center space-x-8">
+                    <a href="#home" class="hover:text-yellow-400 transition-colors">Home</a>
+                    <a href="#features" class="hover:text-yellow-400 transition-colors">Features</a>
+                    <a href="#demo" class="hover:text-yellow-400 transition-colors">Demo</a>
+                    <a href="#pricing" class="hover:text-yellow-400 transition-colors">Pricing</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile Menu Button -->
+                    <div class="hamburger md:hidden">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    
+                    <!-- Desktop Auth Buttons -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <button class="text-slate-300 hover:text-white transition-colors">
+                            <a href="{{ url_for('user_login') }}">Login</a>
+                        </button>
+                        <button class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-full transition-all transform hover:scale-105">
+                            <a href="{{ url_for('user_signup') }}"> Get Started</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <a href="#home" class="mobile-nav-link">Home</a>
+            <a href="#features" class="mobile-nav-link">Features</a>
+            <a href="#demo" class="mobile-nav-link">Demo</a>
+            <a href="#pricing" class="mobile-nav-link">Pricing</a>
+            <div class="mt-8 flex flex-col space-y-4">
+                <a href="{{ url_for('user_login') }}" class="px-6 py-3 text-white border border-white rounded-full">Login</a>
+                <a href="{{ url_for('user_signup') }}" class="px-6 py-3 bg-yellow-500 text-slate-900 rounded-full font-semibold">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-r from-black via-slate-800 to-slate-900 pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-20 md:py-32 grid hero-grid md:grid-cols-2 gap-12 items-center">
+            <!-- Left Side: Text Content -->
+            <div class="text-center md:text-left animate-fade-up">
+                <h1 class="hero-title text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 text-white">
+                    Empower Your Platform with 
+                    <span class="gradient-text block mt-2">
+                        Real-Time Toxicity Detection
+                    </span>
+                </h1>
+                <p class="text-lg text-slate-200 mb-8 max-w-xl mx-auto md:mx-0">
+                    SafeText API helps you detect and filter harmful content using cutting-edge AI — ensuring safer, respectful digital experiences.
+                </p>
+                <div class="hero-buttons flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="{{ url_for('user_signup') }}" class="bg-yellow-500 text-slate-900 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-yellow-400 transition-all get-started-btn flex items-center justify-center">
+                        <span>Get Started Free</span>
+                    </a>
+                    <a href="#demo" class="border border-yellow-500 text-yellow-500 px-8 py-4 rounded-full text-lg font-semibold hover:bg-yellow-500 hover:text-black transition-all flex items-center justify-center">
+                        <span>Try Demo</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Side: Animated Image -->
+            <div class="flex justify-center animate-fade-in order-first md:order-last">
+                <img src="static/Image/landing-image.png" alt="SafeText API Illustration" class="w-full max-w-md lg:max-w-lg rounded-lg shadow-2xl floating" />
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
+            <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-white/50 rounded-full mt-2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 md:py-20 bg-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Powerful Features</h2>
+                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto">
+                    Our AI-powered system provides comprehensive protection for your platform
+                </p>
+            </div>
+
+            <div class="features-grid grid md:grid-cols-3 gap-6 md:gap-8">
+                <div class="feature-card glass-effect rounded-2xl p-6 md:p-8 border border-slate-700 hover:border-yellow-400/50 transition-all">
+                    <div class="text-4xl mb-4 md:mb-6">⚡</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Real-time Detection</h3>
+                    <p class="text-slate-400 mb-6">
+                        Instant analysis and response with sub-second processing times
+                    </p>
+                    <div class="progress-bar bg-slate-700 rounded-full h-2 overflow-hidden">
+                        <div class="progress-fill bg-yellow-400 h-full rounded-full" data-width="95"></div>
+                    </div>
+                    <span class="text-sm text-slate-400 mt-2 block">95% Faster</span>
+                </div>
+
+                <div class="feature-card glass-effect rounded-2xl p-6 md:p-8 border border-slate-700 hover:border-blue-400/50 transition-all">
+                    <div class="text-4xl mb-4 md:mb-6">🎯</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">High Accuracy</h3>
+                    <p class="text-slate-400 mb-6">
+                        99.5% precision rate with advanced machine learning models
+                    </p>
+                    <div class="progress-bar bg-slate-700 rounded-full h-2 overflow-hidden">
+                        <div class="progress-fill bg-blue-400 h-full rounded-full" data-width="99"></div>
+                    </div>
+                    <span class="text-sm text-slate-400 mt-2 block">99.5% Accuracy</span>
+                </div>
+
+                <div class="feature-card glass-effect rounded-2xl p-6 md:p-8 border border-slate-700 hover:border-purple-400/50 transition-all">
+                    <div class="text-4xl mb-4 md:mb-6">🔧</div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Easy Integration</h3>
+                    <p class="text-slate-400 mb-6">
+                        Simple REST API with comprehensive documentation
+                    </p>
+                    <div class="progress-bar bg-slate-700 rounded-full h-2 overflow-hidden">
+                        <div class="progress-fill bg-purple-400 h-full rounded-full" data-width="100"></div>
+                    </div>
+                    <span class="text-sm text-slate-400 mt-2 block">5 min Setup</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="py-16 md:py-20 bg-slate-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Try it Live</h2>
+                <p class="text-lg md:text-xl text-slate-400">
+                    Test our toxic comment detection in real-time
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="demo-container glass-effect rounded-2xl p-6 md:p-8 border border-slate-700">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-2">Enter text to analyze:</label>
+                        <textarea
+                            id="demo-input"
+                            class="w-full h-32 bg-slate-700 border border-slate-600 rounded-lg p-4 text-white placeholder-slate-400 resize-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-colors"
+                            placeholder="Type your message here..."
+                        ></textarea>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                        <button
+                            id="analyze-btn"
+                            class="bg-yellow-400 text-slate-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition-colors w-full sm:w-auto"
+                        >
+                            Analyze Text
+                        </button>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-slate-400">Processing time:</span>
+                            <span id="processing-time" class="text-yellow-400 font-mono">0.00s</span>
+                        </div>
+                    </div>
+
+                    <div id="demo-result" class="hidden">
+                        <div class="bg-slate-700 rounded-lg p-6">
+                            <div class="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
+                                <span class="text-lg font-semibold">Analysis Result:</span>
+                                <div id="result-status" class="px-3 py-1 rounded-full text-sm font-medium"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <span class="text-sm text-slate-400">Toxicity Score:</span>
+                                    <div class="mt-1">
+                                        <div class="bg-slate-600 rounded-full h-2 overflow-hidden">
+                                            <div id="toxicity-bar" class="h-full rounded-full transition-all duration-1000"></div>
+                                        </div>
+                                        <span id="toxicity-score" class="text-sm font-mono mt-1 block"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="text-sm text-slate-400">Confidence:</span>
+                                    <div class="mt-1">
+                                        <div class="bg-slate-600 rounded-full h-2 overflow-hidden">
+                                            <div id="confidence-bar" class="bg-blue-400 h-full rounded-full transition-all duration-1000"></div>
+                                        </div>
+                                        <span id="confidence-score" class="text-sm font-mono mt-1 block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-16 md:py-20 bg-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="section-title text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Simple Pricing</h2>
+                <p class="text-lg md:text-xl text-slate-400">
+                    Choose the plan that fits your needs
+                </p>
+            </div>
+
+            <div class="pricing-grid grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+                <div class="pricing-card glass-effect rounded-2xl p-6 md:p-8 border border-slate-700 hover:border-yellow-400/50 transition-all">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Starter</h3>
+                    <div class="text-3xl md:text-4xl font-bold mb-6">Free</div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> 1,000 requests/month
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Basic documentation
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Email support
+                        </li>
+                    </ul>
+                    <button class="w-full border border-slate-600 text-white py-3 rounded-lg hover:border-yellow-400 transition-colors">
+                        Get Started
+                    </button>
+                </div>
+
+                <div class="pricing-card bg-gradient-to-b from-yellow-400/10 to-transparent border-2 border-yellow-400 rounded-2xl p-6 md:p-8 transform md:scale-105 relative z-10">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-slate-900 px-4 py-1 rounded-full text-sm font-semibold">
+                        Most Popular
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Pro</h3>
+                    <div class="text-3xl md:text-4xl font-bold mb-6">
+                        $49<span class="text-lg text-slate-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> 100,000 requests/month
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Advanced analytics
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Priority support
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Custom models
+                        </li>
+                    </ul>
+                    <button class="w-full bg-yellow-400 text-slate-900 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+
+                <div class="pricing-card glass-effect rounded-2xl p-6 md:p-8 border border-slate-700 hover:border-purple-400/50 transition-all">
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Enterprise</h3>
+                    <div class="text-3xl md:text-4xl font-bold mb-6">Custom</div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Unlimited requests
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> Dedicated support
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> On-premise deployment
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-2">✓</span> SLA guarantee
+                        </li>
+                    </ul>
+                    <button class="w-full border border-slate-600 text-white py-3 rounded-lg hover:border-purple-400 transition-colors">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="footer-grid grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-yellow-400 rounded-lg flex items-center justify-center">
+                            🛡️
+                        </div>
+                        <span class="text-xl font-bold">Safe-Text-API</span>
+                    </div>
+                    <p class="text-slate-400">
+                        Protecting platforms worldwide with intelligent content moderation.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Features</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Documentation</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">API Reference</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Status</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">About</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Careers</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Terms</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Security</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
+                <p>&copy; 2025 Ethronics. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/Js/landing-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe-Text-API Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="/static/css/admin-dashboard.css">
+    <style>
+        /* Simple style to hide non-active pages */
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans">
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed left-0 top-0 z-40 h-screen w-64 bg-gray-900 border-r border-gray-800 transition-all duration-300">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600 rounded-lg">
+                        <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div id="sidebar-title">
+                        <h1 class="text-lg font-bold text-white">Safe-Text-API</h1>
+                    </div>
+                </div>
+                <button id="sidebar-toggle" class="p-2 hover:bg-gray-800 rounded-lg">
+                    <i data-lucide="menu" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="p-4 space-y-2">
+                <a href="#dashboard" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-gray-300 hover:bg-gray-800" data-page="dashboard">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5 flex-shrink-0"></i>
+                    <span class="nav-text font-medium">Dashboard</span>
+                </a>
+                <a href="#users" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-gray-300 hover:bg-gray-800" data-page="users">
+                    <i data-lucide="users" class="w-5 h-5 flex-shrink-0"></i>
+                    <span class="nav-text font-medium">Manage Users</span>
+                </a>
+            </nav>
+
+            <!-- Logout -->
+            <div class="absolute bottom-4 left-4 right-4">
+                 <a href="{{ url_for('logout') }}" id="logout-btn" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors w-full text-gray-300 hover:bg-gray-800">
+                    <i data-lucide="log-out" class="w-5 h-5 flex-shrink-0"></i>
+                    <span class="nav-text font-medium">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 ml-64 transition-all duration-300">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page p-6">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white">Dashboard</h1>
+                    <p class="text-gray-400 mt-2">Welcome to your Safe-Text-API admin dashboard</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Total Users</p>
+                                <p class="text-2xl font-bold text-white">{{ stats.total_users | default('0') }}</p>
+                            </div>
+                            <div class="p-3 bg-blue-600/20 rounded-lg">
+                                <i data-lucide="users" class="w-6 h-6 text-blue-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">API Requests</p>
+                                <p class="text-2xl font-bold text-white">{{ stats.api_requests | default('0') }}</p>
+                            </div>
+                            <div class="p-3 bg-green-600/20 rounded-lg">
+                                <i data-lucide="activity" class="w-6 h-6 text-green-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Toxic Content Blocked</p>
+                                <p class="text-2xl font-bold text-white">{{ stats.toxic_blocked | default('0') }}</p>
+                            </div>
+                            <div class="p-3 bg-red-600/20 rounded-lg">
+                                <i data-lucide="shield-alert" class="w-6 h-6 text-red-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm">Active API Keys</p>
+                                <p class="text-2xl font-bold text-white">{{ stats.active_api_keys | default('0') }}</p>
+                            </div>
+                            <div class="p-3 bg-purple-600/20 rounded-lg">
+                                <i data-lucide="key" class="w-6 h-6 text-purple-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">API Usage Over Time</h3>
+                        <canvas id="usageChart"></canvas>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-white mb-4">Content Moderation Results</h3>
+                        <canvas id="moderationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div id="users-page" class="page p-6">
+                <div class="mb-6">
+                    <h1 class="text-3xl font-bold text-white">Manage Users</h1>
+                    <p class="text-gray-400 mt-2">View and manage user accounts and their API access</p>
+                </div>
+                <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Credits</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">API Requests</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Joined</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body" class="bg-gray-900 divide-y divide-gray-800">
+                                {% for user in users %}
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-white">{{ user.email }}</div></td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {% if user.status.lower() == 'approved' %}
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-600 text-white">{{ user.status }}</span>
+                                        {% else %}
+                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-600 text-white">{{ user.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ user.credits }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ user.api_requests }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{{ user.joined }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><a href="#" class="text-blue-400 hover:text-blue-500">Edit</a></td>
+                                </tr>
+                                {% else %}
+                                <tr><td colspan="6" class="text-center px-6 py-4 text-sm text-gray-400">No users found.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentation Page -->
+            <div id="documentation-page" class="page p-6">
+                <!-- ... Documentation content ... -->
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings-page" class="page p-6">
+                <!-- ... Settings content ... -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarTitle = document.getElementById('sidebar-title');
+        const navTexts = document.querySelectorAll('.nav-text');
+
+        // Function to show the correct page and update nav link styles
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.toggle('active', page.id === pageId + '-page');
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('bg-gray-800', link.dataset.page === pageId);
+                link.classList.toggle('text-white', link.dataset.page === pageId);
+            });
+        }
+
+        // Handle navigation link clicks
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const pageId = this.dataset.page;
+                window.location.hash = pageId;
+                showPage(pageId);
+            });
+        });
+
+        // Handle page load based on URL hash
+        const initialPage = window.location.hash.substring(1) || 'dashboard';
+        showPage(initialPage);
+
+        // Sidebar toggle functionality
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('w-64');
+                sidebar.classList.toggle('w-20');
+                mainContent.classList.toggle('ml-64');
+                mainContent.classList.toggle('ml-20');
+                sidebarTitle.classList.toggle('hidden');
+                navTexts.forEach(text => text.classList.toggle('hidden'));
+            });
+        }
+
+        // Initialize Charts (with static data for now)
+        const usageCtx = document.getElementById('usageChart')?.getContext('2d');
+        if (usageCtx) {
+            new Chart(usageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'API Requests',
+                        data: [120, 150, 180, 220, 190, 230, 250],
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        tension: 0.4,
+                        fill: true,
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        const moderationCtx = document.getElementById('moderationChart')?.getContext('2d');
+        if (moderationCtx) {
+            new Chart(moderationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Safe', 'Toxic', 'Profane'],
+                    datasets: [{
+                        label: 'Content Moderation',
+                        data: [850, 120, 30],
+                        backgroundColor: ['#10B981', '#EF4444', '#F59E0B'],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
